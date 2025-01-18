@@ -1,0 +1,106 @@
+/* 全局样式 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 头部样式 */
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 2;
+    text-align: center;
+}
+
+/* 登录框和注册框通用样式 */
+.login-box,
+.register-box {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    z-index: 1;
+    text-align: center;
+}
+
+/* 标题样式 */
+h1, h2 {
+    color: #333;
+    margin: 0;
+}
+
+/* 输入框样式 */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* 按钮样式 */
+button {
+    background-color: #add8e6; /* 将按钮的背景颜色修改为浅蓝色 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    background-color: #87ceeb; /* 鼠标悬停时的颜色，可根据需要调整 */
+}
+
+/* 图片样式 */
+.logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 250px;
+    height: 170px;
+}
+
+/* 注册按钮样式 */
+.register-button {
+    background-color: #add8e6; /* 将注册按钮的背景颜色修改为浅蓝色 */
+}
+
+.register-button:hover {
+    background-color: #87ceeb; /* 鼠标悬停时的颜色，可根据需要调整 */
+}
+
+/* 视频背景样式 */
+#video-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+}
+
+/* 使 label 和 checkbox 元素在同一行 */
+label {
+    display: inline-block;
+    margin-bottom: 15px;
+}

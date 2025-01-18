@@ -1,0 +1,174 @@
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2025/1/2 12:45:35                            */
+/*==============================================================*/
+
+
+/*==============================================================*/
+/* Table: stuInfo                                               */
+/*==============================================================*/
+create table stuInfo
+(
+   stuID                char(12) not null,
+   用户id                 char(20),
+   name                 char(20),
+   grade                char(20),
+   institute            char(40),
+   contactingWay        char(12),
+   email                char(40),
+   sex                  char(6),
+   primary key (stuID)
+);
+
+/*==============================================================*/
+/* Table: 下单                                                    */
+/*==============================================================*/
+create table 下单
+(
+   用户id                 char(20) not null,
+   订单编号                 char(12) not null,
+   下单时间                 date,
+   下单数量                 int,
+   primary key (用户id, 订单编号)
+);
+
+/*==============================================================*/
+/* Table: 代买餐订单                                                 */
+/*==============================================================*/
+create table 代买餐订单
+(
+   订单编号                 char(12) not null,
+   收货地址                 text,
+   小费                   int,
+   餐品花费                 int,
+   订单状态                 int,
+   类别                   int,
+   餐厅                   int,
+   餐品描述                 text,
+   primary key (订单编号)
+);
+
+/*==============================================================*/
+/* Table: 发布服务                                                  */
+/*==============================================================*/
+create table 发布服务
+(
+   服务编号                 char(10) not null,
+   用户id                 char(20) not null,
+   发布时间                 int,
+   发布数量                 date,
+   primary key (服务编号, 用户id)
+);
+
+/*==============================================================*/
+/* Table: 失信名单                                                  */
+/*==============================================================*/
+create table 失信名单
+(
+   用户id                 char(20) not null,
+   失信原因                 text,
+   失信时间                 date,
+   处理结果                 int,
+   primary key (用户id)
+);
+
+/*==============================================================*/
+/* Table: 投诉                                                    */
+/*==============================================================*/
+create table 投诉
+(
+   用户id                 char(20) not null,
+   订单编号                 char(12) not null,
+   投诉时间                 date,
+   投诉原因                 text,
+   投诉类别                 int,
+   数量                   int,
+   primary key (用户id, 订单编号)
+);
+
+/*==============================================================*/
+/* Table: 接单                                                    */
+/*==============================================================*/
+create table 接单
+(
+   用户id                 char(20) not null,
+   订单编号                 char(12) not null,
+   接单时间                 date,
+   接单数量                 int,
+   primary key (用户id, 订单编号)
+);
+
+/*==============================================================*/
+/* Table: 服务                                                    */
+/*==============================================================*/
+create table 服务
+(
+   服务编号                 char(10) not null,
+   服务类别                 int,
+   服务描述                 text,
+   primary key (服务编号)
+);
+
+/*==============================================================*/
+/* Table: 用户                                                    */
+/*==============================================================*/
+create table 用户
+(
+   用户id                 char(20) not null,
+   账号                   text,
+   密码                   text,
+   是否是管理员               bool,
+   是否是失信用户              bool,
+   primary key (用户id)
+);
+
+/*==============================================================*/
+/* Table: 被投诉                                                   */
+/*==============================================================*/
+create table 被投诉
+(
+   用户id                 char(20) not null,
+   订单编号                 char(12) not null,
+   投诉时间                 date,
+   投诉原因                 text,
+   投诉类别                 int,
+   数量                   int,
+   primary key (用户id, 订单编号)
+);
+
+alter table stuInfo add constraint FK_用户_学生 foreign key (用户id)
+      references 用户 (用户id) on delete restrict on update restrict;
+
+alter table 下单 add constraint FK_下单 foreign key (订单编号)
+      references 代买餐订单 (订单编号) on delete restrict on update restrict;
+
+alter table 下单 add constraint FK_下单2 foreign key (用户id)
+      references 用户 (用户id) on delete restrict on update restrict;
+
+alter table 发布服务 add constraint FK_发布服务 foreign key (用户id)
+      references 用户 (用户id) on delete restrict on update restrict;
+
+alter table 发布服务 add constraint FK_发布服务2 foreign key (服务编号)
+      references 服务 (服务编号) on delete restrict on update restrict;
+
+alter table 投诉 add constraint FK_投诉 foreign key (订单编号)
+      references 代买餐订单 (订单编号) on delete restrict on update restrict;
+
+alter table 投诉 add constraint FK_投诉2 foreign key (用户id)
+      references 用户 (用户id) on delete restrict on update restrict;
+
+alter table 接单 add constraint FK_接单 foreign key (订单编号)
+      references 代买餐订单 (订单编号) on delete restrict on update restrict;
+
+alter table 接单 add constraint FK_接单2 foreign key (用户id)
+      references 用户 (用户id) on delete restrict on update restrict;
+
+alter table 用户 add constraint FK_用户_失信名单 foreign key (用户id)
+      references 失信名单 (用户id) on delete restrict on update restrict;
+
+alter table 被投诉 add constraint FK_被投诉 foreign key (订单编号)
+      references 代买餐订单 (订单编号) on delete restrict on update restrict;
+
+alter table 被投诉 add constraint FK_被投诉2 foreign key (用户id)
+      references 用户 (用户id) on delete restrict on update restrict;
+
