@@ -1,0 +1,8 @@
+# codin setting
+.codin
+
+# 配置
+node_modules
+
+# 产物
+dist

@@ -96,7 +96,7 @@ const OrderDetail: React.FC = () => {
 
   useEffect(() => {
     fetchOrderDetail();
-  }, [id]);
+  });
 
   const handleAcceptOrder = async () => {
     if (!order) return;
@@ -119,8 +119,10 @@ const OrderDetail: React.FC = () => {
     if (!order) return;
 
     // 使用浏览器原生确认对话框
-    const confirmed = window.confirm("确认已完成此订单的配送吗？\n\n点击\"确定\"完成订单，点击\"取消\"返回。");
-    
+    const confirmed = window.confirm(
+      '确认已完成此订单的配送吗？\n\n点击"确定"完成订单，点击"取消"返回。'
+    );
+
     if (confirmed) {
       try {
         console.log("正在完成订单:", order.id); // 调试日志
@@ -144,8 +146,10 @@ const OrderDetail: React.FC = () => {
     if (!order) return;
 
     // 使用浏览器原生确认对话框
-    const confirmed = window.confirm("确认要取消此订单吗？\n\n⚠️ 此操作不可撤销！\n\n点击\"确定\"取消订单，点击\"取消\"返回。");
-    
+    const confirmed = window.confirm(
+      '确认要取消此订单吗？\n\n⚠️ 此操作不可撤销！\n\n点击"确定"取消订单，点击"取消"返回。'
+    );
+
     if (confirmed) {
       try {
         console.log("正在取消订单:", order.id); // 调试日志
@@ -198,23 +202,42 @@ const OrderDetail: React.FC = () => {
 
   const getActionButtons = () => {
     if (!order || !user) {
-      console.log("🔍 [OrderDetail getActionButtons] order或user为空:", { order: !!order, user: !!user });
+      console.log("🔍 [OrderDetail getActionButtons] order或user为空:", {
+        order: !!order,
+        user: !!user,
+      });
       return null;
     }
 
     const isPublisher = order.publisher_id === user.id;
     const isAccepter = order.accepter_id === user.id;
 
-    console.log("🔍 [OrderDetail getActionButtons] Order:", order.id, "Status:", order.status, "Publisher:", order.publisher_id, "Accepter:", order.accepter_id, "User:", user.id);
-    console.log("🔍 [OrderDetail getActionButtons] isPublisher:", isPublisher, "isAccepter:", isAccepter);
+    console.log(
+      "🔍 [OrderDetail getActionButtons] Order:",
+      order.id,
+      "Status:",
+      order.status,
+      "Publisher:",
+      order.publisher_id,
+      "Accepter:",
+      order.accepter_id,
+      "User:",
+      user.id
+    );
+    console.log(
+      "🔍 [OrderDetail getActionButtons] isPublisher:",
+      isPublisher,
+      "isAccepter:",
+      isAccepter
+    );
 
     if (order.status === "pending") {
       if (isPublisher) {
         console.log("🔍 [OrderDetail getActionButtons] 显示取消订单按钮");
         return (
-          <Button 
-            type="primary" 
-            danger 
+          <Button
+            type="primary"
+            danger
             onClick={() => {
               console.log("🔥 [OrderDetail Button Click] 取消订单按钮被点击");
               handleCancelOrder();
@@ -226,8 +249,8 @@ const OrderDetail: React.FC = () => {
       } else {
         console.log("🔍 [OrderDetail getActionButtons] 显示接受订单按钮");
         return (
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             onClick={() => {
               console.log("🔥 [OrderDetail Button Click] 接受订单按钮被点击");
               handleAcceptOrder();
@@ -242,8 +265,8 @@ const OrderDetail: React.FC = () => {
     if (order.status === "accepted" && isAccepter) {
       console.log("🔍 [OrderDetail getActionButtons] 显示完成订单按钮");
       return (
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           onClick={() => {
             console.log("🔥 [OrderDetail Button Click] 完成订单按钮被点击");
             handleCompleteOrder();

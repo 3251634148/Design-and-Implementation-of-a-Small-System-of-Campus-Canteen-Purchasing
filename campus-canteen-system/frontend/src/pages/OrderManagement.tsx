@@ -6,7 +6,6 @@ import { useAuthStore } from "../stores/authStore";
 import OrderList from "../components/OrderList";
 import OrderForm from "../components/OrderForm";
 import AppLayout from "../components/AppLayout";
-import DebugInfo from "../components/DebugInfo";
 import TestModal from "../components/TestModal";
 
 const OrderManagement: React.FC = () => {
@@ -95,21 +94,20 @@ const OrderManagement: React.FC = () => {
 
   return (
     <AppLayout>
-      <DebugInfo />
       <TestModal />
       <div style={{ width: "100%", maxWidth: "100%" }}>
-        <Card 
-          style={{ 
-            minHeight: "calc(100vh - 200px)", 
+        <Card
+          style={{
+            minHeight: "calc(100vh - 200px)",
             width: "100%",
-            maxWidth: "100%"
+            maxWidth: "100%",
           }}
           styles={{
             body: {
               width: "100%",
               maxWidth: "100%",
-              padding: "24px"
-            }
+              padding: "24px",
+            },
           }}
         >
           <Tabs

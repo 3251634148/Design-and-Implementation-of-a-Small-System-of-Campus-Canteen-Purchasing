@@ -4,7 +4,7 @@ import { Button, Modal, message } from "antd";
 const TestModal: React.FC = () => {
   const testModal = () => {
     console.log("🧪 [TestModal] 测试Modal开始");
-    
+
     try {
       const modalInstance = Modal.confirm({
         title: "测试Modal",
@@ -19,9 +19,9 @@ const TestModal: React.FC = () => {
         onCancel: () => {
           console.log("❌ [TestModal] 用户点击了取消");
           message.info("测试取消");
-        }
+        },
       });
-      
+
       console.log("🧪 [TestModal] Modal实例创建:", modalInstance);
     } catch (error) {
       console.error("❌ [TestModal] Modal创建失败:", error);
@@ -29,16 +29,18 @@ const TestModal: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      position: "fixed", 
-      bottom: "20px", 
-      left: "20px", 
-      zIndex: 1000,
-      backgroundColor: "#fff",
-      padding: "10px",
-      border: "2px solid #52c41a",
-      borderRadius: "4px"
-    }}>
+    <div
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        left: "20px",
+        zIndex: 1000,
+        backgroundColor: "#fff",
+        padding: "10px",
+        border: "2px solid #52c41a",
+        borderRadius: "4px",
+      }}
+    >
       <Button type="primary" onClick={testModal}>
         测试Modal
       </Button>

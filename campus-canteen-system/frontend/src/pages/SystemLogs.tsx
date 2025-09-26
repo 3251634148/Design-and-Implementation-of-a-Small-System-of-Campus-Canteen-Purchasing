@@ -13,7 +13,7 @@ import {
   Timeline,
 } from "antd";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import { adminService, type SystemActivity, type SystemLogsParams } from "../services/adminService";
@@ -38,7 +38,7 @@ const SystemLogs: React.FC = () => {
   });
 
   // 加载系统活动日志
-  const loadLogs = async () => {
+  const loadLogs = useCallback(async () => {
     setLoading(true);
     try {
       const response = await adminService.getSystemLogs({
@@ -53,13 +53,13 @@ const SystemLogs: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, pageSize, filters]);
 
   useEffect(() => {
     if (user?.is_admin) {
       loadLogs();
     }
-  }, [user, currentPage, pageSize]);
+  }, [user, loadLogs]);
 
   // 搜索处理
   const handleSearch = () => {
@@ -204,7 +204,9 @@ const SystemLogs: React.FC = () => {
               <Table
                 columns={columns}
                 dataSource={activities}
-                rowKey={(record, index) => `${record.timestamp}-${index}`}
+                rowKey={(record, index) =>
+                  `${record.timestamp}-${record.type}-${record.message.slice(0, 20)}-${index}`
+                }
                 loading={loading}
                 pagination={{
                   current: currentPage,
@@ -231,7 +233,7 @@ const SystemLogs: React.FC = () => {
             >
               <Timeline>
                 {activities.slice(0, 20).map((activity, index) => (
-                  <Timeline.Item key={index}>
+                  <Timeline.Item key={`timeline-${activity.timestamp}-${activity.type}-${index}`}>
                     <div style={{ fontSize: "12px", color: "#666" }}>
                       {new Date(activity.timestamp).toLocaleString()}
                     </div>

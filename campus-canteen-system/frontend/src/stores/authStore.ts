@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { adminService, type SubmitRegistrationApplicationRequest } from "../services/adminService";
 import AuthService, {
   type LoginRequest,
   type RegisterRequest,
@@ -17,6 +18,9 @@ interface AuthState {
 interface AuthActions {
   login: (credentials: LoginRequest) => Promise<boolean>;
   register: (userData: RegisterRequest) => Promise<boolean>;
+  submitRegistrationApplication: (
+    applicationData: SubmitRegistrationApplicationRequest
+  ) => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
   loadUserFromStorage: () => void;
@@ -110,6 +114,38 @@ export const useAuthStore = create<AuthStore>()(
           }
         } catch (error: any) {
           const errorMessage = error.response?.data?.message || "注册失败，请检查网络连接";
+          set({
+            isLoading: false,
+            error: errorMessage,
+          });
+          return false;
+        }
+      },
+
+      // 提交注册申请
+      submitRegistrationApplication: async (
+        applicationData: SubmitRegistrationApplicationRequest
+      ) => {
+        set({ isLoading: true, error: null });
+
+        try {
+          const response = await adminService.submitRegistrationApplication(applicationData);
+
+          if (response.success) {
+            set({
+              isLoading: false,
+              error: null,
+            });
+            return true;
+          } else {
+            set({
+              isLoading: false,
+              error: response.message || "提交注册申请失败",
+            });
+            return false;
+          }
+        } catch (error: any) {
+          const errorMessage = error.response?.data?.message || "提交注册申请失败，请检查网络连接";
           set({
             isLoading: false,
             error: errorMessage,

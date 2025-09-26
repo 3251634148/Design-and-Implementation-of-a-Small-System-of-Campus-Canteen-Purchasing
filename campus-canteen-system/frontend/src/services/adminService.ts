@@ -131,6 +131,19 @@ export interface ReviewRegistrationRequest {
   comment?: string;
 }
 
+export interface SubmitRegistrationApplicationRequest {
+  username: string;
+  password: string;
+  student_card_id: string;
+  name: string;
+  grade?: string;
+  institute?: string;
+  contact_way?: string;
+  email?: string;
+  gender?: "male" | "female" | "other";
+  student_photo?: File;
+}
+
 export const adminService = {
   // 获取用户列表
   async getUsers(params?: UserQueryParams): Promise<UserListResponse> {
@@ -190,5 +203,30 @@ export const adminService = {
   ): Promise<RegistrationApplication> {
     const response = await api.post(`/admin/registration-applications/${id}/review`, reviewData);
     return response.data.data;
+  },
+
+  // 提交注册申请
+  async submitRegistrationApplication(
+    applicationData: SubmitRegistrationApplicationRequest
+  ): Promise<{ success: boolean; message: string; applicationId?: number }> {
+    const formData = new FormData();
+
+    // 添加所有字段到FormData
+    Object.entries(applicationData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (key === "student_photo" && value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, String(value));
+        }
+      }
+    });
+
+    const response = await api.post("/auth/register-application", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
   },
 };
