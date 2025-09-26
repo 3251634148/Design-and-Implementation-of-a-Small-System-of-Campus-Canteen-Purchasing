@@ -1,0 +1,63 @@
+{
+  // 设置Biome为默认格式化程序
+  "editor.defaultFormatter": "biomejs.biome",
+  
+  // 为特定文件类型设置Biome为默认格式化程序
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  
+  // 启用保存时自动格式化
+  "editor.formatOnSave": true,
+  
+  // 启用保存时自动修复
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  
+  // 禁用其他格式化程序以避免冲突
+  "prettier.enable": false,
+  "eslint.format.enable": false,
+  
+  // Biome相关设置
+  "biome.enabled": true,
+  "biome.lspBin": "biome",
+  
+  // 文件关联设置
+  "files.associations": {
+    "*.tsx": "typescriptreact",
+    "*.ts": "typescript",
+    "*.jsx": "javascriptreact",
+    "*.js": "javascript"
+  },
+  
+  // 编辑器设置，与biome.json保持一致
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  
+  // 排除某些文件夹的格式化
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.next": true,
+    "**/coverage": true
+  }
+}
