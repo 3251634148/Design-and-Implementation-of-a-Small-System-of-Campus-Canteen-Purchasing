@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单按钮调试测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button.danger {
+            background-color: #ff4d4f;
+        }
+        .button:hover {
+            opacity: 0.8;
+        }
+        .log {
+            background: #f6f6f6;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>订单按钮调试测试</h1>
+    
+    <div class="test-container">
+        <h3>测试1: 基本按钮点击</h3>
+        <button class="button" onclick="testBasicClick()">取消订单</button>
+        <button class="button" onclick="testBasicClick()">完成订单</button>
+        <div id="log1" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h3>测试2: Modal确认对话框</h3>
+        <button class="button danger" onclick="testModalConfirm('cancel')">取消订单 (带确认)</button>
+        <button class="button" onclick="testModalConfirm('complete')">完成订单 (带确认)</button>
+        <div id="log2" class="log"></div>
+    </div>
+
+    <div class="test-container">
+        <h3>测试3: API调用模拟</h3>
+        <button class="button danger" onclick="testApiCall('cancel', 123)">模拟取消订单API</button>
+        <button class="button" onclick="testApiCall('complete', 123)">模拟完成订单API</button>
+        <div id="log3" class="log"></div>
+    </div>
+
+    <script>
+        function log(containerId, message) {
+            const container = document.getElementById(containerId);
+            const timestamp = new Date().toLocaleTimeString();
+            container.textContent += `[${timestamp}] ${message}\n`;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function testBasicClick() {
+            log('log1', '🔥 按钮被点击了！');
+        }
+
+        function testModalConfirm(action) {
+            log('log2', `🚀 ${action} 函数被调用`);
+            
+            const confirmed = confirm(`确认要${action === 'cancel' ? '取消' : '完成'}订单吗？`);
+            
+            if (confirmed) {
+                log('log2', `✅ 用户点击了确认按钮 (${action})`);
+                log('log2', `🔄 开始执行 ${action} 操作...`);
+                
+                // 模拟异步操作
+                setTimeout(() => {
+                    log('log2', `📥 ${action} 操作完成`);
+                }, 1000);
+            } else {
+                log('log2', `❌ 用户点击了取消按钮 (${action})`);
+            }
+        }
+
+        function testApiCall(action, orderId) {
+            log('log3', `🚀 ${action} 函数被调用, orderId: ${orderId}`);
+            
+            const confirmed = confirm(`确认要${action === 'cancel' ? '取消' : '完成'}订单 ${orderId} 吗？`);
+            
+            if (confirmed) {
+                log('log3', `✅ 用户点击了确认按钮, orderId: ${orderId}`);
+                log('log3', `🔄 正在调用 /orders/${orderId}/${action} API...`);
+                
+                // 模拟API调用
+                fetch(`http://localhost:3000/api/orders/${orderId}/${action}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer test-token'
+                    }
+                })
+                .then(response => {
+                    log('log3', `📥 API响应状态: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    log('log3', `📥 API响应数据: ${JSON.stringify(data)}`);
+                })
+                .catch(error => {
+                    log('log3', `❌ API调用失败: ${error.message}`);
+                });
+            } else {
+                log('log3', `❌ 用户点击了取消按钮, orderId: ${orderId}`);
+            }
+        }
+
+        // 页面加载时的初始化日志
+        window.onload = function() {
+            log('log1', '页面加载完成，准备测试基本按钮点击');
+            log('log2', '页面加载完成，准备测试Modal确认对话框');
+            log('log3', '页面加载完成，准备测试API调用');
+        };
+    </script>
+</body>
+</html>
